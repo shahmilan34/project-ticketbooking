@@ -25,10 +25,10 @@ class Movies(DBConnection):
     # get time of movie on selected date
     def getMovieDateTimes(self, movies_id, movies_dates_id):
         DBConnection.dictCursor.execute(
-                "SELECT id,time FROM movie_times "
-                + "where movies_id="+str(movies_id)
-                + " AND movies_dates_id ="+str(movies_dates_id)
-            )
+            "SELECT id,time FROM movie_times "
+            + "where movies_id="+str(movies_id)
+            + " AND movies_dates_id ="+str(movies_dates_id)
+        )
         resultSet = DBConnection.dictCursor.fetchall()
         movieDates = {}
         for row in resultSet:
@@ -42,15 +42,13 @@ class Movies(DBConnection):
     ):
         sql = "INSERT INTO tickets_booked (`movies_id`, `movies_dates_id`,"
         sql += " `movie_times_id`, `seat_no`, `user_id`)"
-        sql += " VALUES (%s,%s,%s,%s,%s)"
+        sql += " VALUES (?,?,?,?,?)"
         val = (movies_id, movies_dates_id, movie_times_id, seat_no, user_id)
-        try:
-            DBConnection.dictCursor.execute(sql, val)
-            DBConnection.db.commit()
-        except MySQLdb.error:
-            DBConnection.db.rollback()
+        DBConnection.dictCursor.execute(sql, val)
+        DBConnection.db.commit()
 
         # get time of movie on selected date
+
     def getBookedSeats(self, movies_id, movies_dates_id, movie_times_id):
         DBConnection.dictCursor.execute(
             "SELECT seat_no FROM tickets_booked where movies_id="
