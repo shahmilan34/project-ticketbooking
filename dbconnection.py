@@ -1,12 +1,12 @@
-import MySQLdb
+import sqlite3
+import sys
 
 
 class DBConnection(object):
 
-    db = MySQLdb.connect(
-        host="172.17.0.1",
-        user="root",
-        passwd="Redhat@123",
-        db="project"
+    dbPath = sys.path[0]+"/database.db"
+    db = sqlite3.connect(
+        dbPath
     )
-    dictCursor = db.cursor(MySQLdb.cursors.DictCursor)
+    db.row_factory = sqlite3.Row
+    dictCursor = db.cursor()
